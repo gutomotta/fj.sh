@@ -13,4 +13,4 @@ Maybe. I looked around a bit before starting to develop my own local task manage
 
 ## Are you remaking GNU Make?
 
-No. In fact, this aims to be a much simpler project. GNU Make is a very powerful tool, but it is origninally designed to generate executables from source files, not executing local tasks associated with your git repository. I used GNU Make for setting up local tasks many times, but that was always harder than just writing shell functions, because the tool wasn't designed for that purpose.
+No. In fact, this aims to be a much simpler project. GNU Make is a very powerful tool, but it is originally designed to generate executables from source files, not executing local tasks associated with your git repository. I used GNU Make for setting up local tasks many times, but that was always harder than just writing shell functions, because the tool wasn't designed for that purpose.
