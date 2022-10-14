@@ -9,6 +9,7 @@ To install it, just clone the repository and add a symbolic link name `fj` to `s
 ```sh
 git clone --depth 1 https://github.com/gutomotta/fj.sh.git ~/.fj.sh
 ln -s ~/.fj.sh/src/fj.sh /usr/local/bin/fj
+chmod u+x /usr/local/bin/fj
 ```
 
 If you have ever added `~/bin/` to your `PATH`, you can optionally change `/usr/local/bin/fj` by `~/bin/fj`.
