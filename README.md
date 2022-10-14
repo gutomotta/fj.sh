@@ -35,7 +35,6 @@ To use it:
 Take a look at an example local `fj.sh` file:
 
 ```sh
-# fj.sh
 #!/bin/bash
 
 up() (
