@@ -45,6 +45,11 @@ up() (
 down() (
     docker compose down
 )
+
+# it also works with function arguments!
+test() (
+    python -m unittest $@
+)
 ```
 
 In this example, you could run `fj up` from your project root instead of `docker compose up -d`.
