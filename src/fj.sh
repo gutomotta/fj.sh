@@ -82,7 +82,7 @@ __read_opts() {
                 exit 0
                 ;;
             l)
-                echo "Tasks defined in your $source_file file are: "
+                echo "Tasks available in your $source_file file are: "
                 echo
                 for tsk in "${available_tasks[@]}"
                 do
@@ -128,7 +128,7 @@ __validate_fjsh_file() {
 __validate_task_called_is_defined() {
     if [[ $task_called_is_defined -eq 0 ]]
     then
-        echo "The task $task_called is not defined in your $source_file file."
+        echo "The task $task_called is not available in your $source_file file (it's undefined or private)."
         exit $INVALID_TASK_ERROR_CODE
     fi
 }
