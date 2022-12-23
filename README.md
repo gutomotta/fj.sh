@@ -60,10 +60,11 @@ Go try it yourself!
 
 `fj.sh` has some built-in "meta-tasks". Those are tasks you can run to help you manage your repo's tasks. These are the current available meta-tasks:
 
-| Meta-task   | Description                                     |
-|-------------|-------------------------------------------------|
-| `fj --list` | Lists all tasks available in your `fj.sh` file. |
-| `fj --help` | Shows usage message.                            |
+| Meta-task  | Description                                      | Long form      | Short form |
+|------------|--------------------------------------------------|----------------|------------|
+| List tasks | Lists all tasks available in your `fj.sh` file.  | `fj --list`    | `fj -l`    |
+| Help       | Shows usage message.                             | `fj --help`    | `fj -h`    |
+| Version    | Prints current version of the `fj.sh` executable | `fj --version` | `fj -v`    |
 
 
 # FAQ
