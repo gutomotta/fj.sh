@@ -27,9 +27,9 @@ git pull origin master
 
 To use it:
 
-1. In the root of some repo, create a `fj.sh` file
-2. Add functions to it to perform common development tasks you usually need to run from your shell
-3. Run them by invoking `fj mytask`
+1. In the root of some repo, create a `fj.sh` file.
+2. Add functions to it to perform common development tasks you usually need to run from your shell. From now on, we'll call those functions "tasks".
+3. Run them by invoking `fj mytask` from the repo root.
 
 ## Example
 
@@ -48,13 +48,23 @@ down() (
 
 # it also works with function arguments!
 test() (
-    python -m unittest $@
+    python -m unittest "$@"
 )
 ```
 
-In this example, you could run `fj up` from your project root instead of `docker compose up -d`.
+In this example, you could run `fj up` from your project root instead of `docker compose up -d`. Also, you can pass arguments to your tasks (for instance, you can run `fj test test/test_users.py`).
 
 Go try it yourself!
+
+## Meta-tasks
+
+`fj.sh` has some built-in "meta-tasks". Those are tasks you can run to help you manage your repo's tasks. These are the current available meta-tasks:
+
+| Meta-task   | Description                                     |
+|-------------|-------------------------------------------------|
+| `fj --list` | Lists all tasks available in your `fj.sh` file. |
+| `fj --help` | Shows usage message.                            |
+
 
 # FAQ
 ## Why?
