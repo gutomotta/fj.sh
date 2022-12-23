@@ -21,13 +21,13 @@ fi
 if test ! -f $source_file
 then
     echo "$0: Could not find a $source_file file in the current directory! You should probably create one :)"
-    exit 1
+    exit $GENERIC_ERROR_CODE
 fi
 
 if egrep "^$source_command$" $source_file
 then
     echo "$0: You are sourcing $source_file in $source_file - that would lead to an infinite loop!"
-    exit 1
+    exit $GENERIC_ERROR_CODE
 fi
 
 __load_tasks() {
@@ -84,7 +84,7 @@ __read_opts() {
             ?)
                 echo "Invalid option: -${OPTARG}."
 
-                exit 2
+                exit $INVALID_OPT_ERROR_CODE
                 ;;
         esac
     done
