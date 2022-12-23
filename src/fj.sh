@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+VERSION=0.3.0
+
 task="$1"
 
 source_file=fj.sh
@@ -53,6 +55,9 @@ __read_opts() {
             '--list')
                 set -- "$@" '-l'  
                 ;;
+            '--version')
+                set -- "$@" '-v'
+                ;;
             --*)
                 echo "Invalid option: $arg"
                 exit $INVALID_OPT_ERROR_CODE
@@ -63,7 +68,7 @@ __read_opts() {
         esac
     done
 
-    while getopts ":hl" opt; do
+    while getopts ":hlv" opt; do
         case "${opt}" in
             h)
                 echo "At the moment, fj.sh does not have an usage description."
@@ -81,8 +86,13 @@ __read_opts() {
 
                 exit 0
                 ;;
+            v)
+                echo $VERSION
+
+                exit 0
+                ;;
             ?)
-                echo "Invalid option: -${OPTARG}."
+                echo "Invalid option: -${OPTARG}"
 
                 exit $INVALID_OPT_ERROR_CODE
                 ;;
