@@ -1,24 +1,28 @@
 # fj.sh
 
-`fj.sh` is a minimalist command-line task manager and runner. It allows you to set up shell functions for running tasks scoped to a local directory, and run them easily by using the shortcut `fj mytask`.
+`fj.sh` is a minimalist command-line task manager and runner. It allows you to set up
+shell functions for running tasks scoped to a local directory, and run them easily by
+using the shortcut `fj mytask`.
 
 # Install
 
-To install it, just clone the repository and add a symbolic link name `fj` to `src/fj.sh`:
+To install it, just clone the repository and add a symbolic link name `fj` to
+`src/fj.sh`:
 
-```sh
+```bash
 git clone --depth 1 https://github.com/gutomotta/fj.sh.git ~/.fj.sh
 ln -s ~/.fj.sh/src/fj.sh /usr/local/bin/fj
 chmod u+x /usr/local/bin/fj
 ```
 
-If you have ever added `~/bin/` to your `PATH`, you can optionally change `/usr/local/bin/fj` by `~/bin/fj`.
+If you have ever added `~/bin/` to your `PATH`, you can optionally change
+`/usr/local/bin/fj` by `~/bin/fj`.
 
 # Update
 
 For now, the only way to update this is by pulling the latest version from GitHub:
 
-```sh
+```bash
 cd ~/.fj.sh
 git pull origin master
 ```
@@ -27,7 +31,7 @@ git pull origin master
 
 Simply remove the repo (and the symbolic link to the executable) from your machine:
 
-```sh
+```bash
 rm -rf ~/.fj.sh /usr/local/bin/fj
 ```
 
@@ -36,14 +40,15 @@ rm -rf ~/.fj.sh /usr/local/bin/fj
 To use it:
 
 1. In the root of some repo, create a `fj.sh` file.
-2. Add functions to it to perform common development tasks you usually need to run from your shell. From now on, we'll call those functions "tasks".
+2. Add functions to it to perform common development tasks you usually need to run from
+   your shell. From now on, we'll call those functions "tasks".
 3. Run them by invoking `fj mytask` from the repo root.
 
 ## Example
 
 Take a look at an example local `fj.sh` file:
 
-```sh
+```bash
 #!/bin/bash
 
 up() (
@@ -60,13 +65,16 @@ test() (
 )
 ```
 
-In this example, you could run `fj up` from your project root instead of `docker compose up -d`. Moreover, you can pass arguments to your tasks (for instance, you can run `fj test test/test_users.py`).
+In this example, you could run `fj up` from your project root instead of `docker compose
+up -d`. Moreover, you can pass arguments to your tasks (for instance, you can run `fj
+test test/test_users.py`).
 
 Try it yourself!
 
 ## Meta-tasks
 
-`fj.sh` has some built-in "meta-tasks". Those are special tasks you can run to help you manage your repo's tasks. These are the meta-tasks available currently:
+`fj.sh` has some built-in "meta-tasks". Those are special tasks you can run to help you
+manage your repo's tasks. These are the meta-tasks available currently:
 
 | Meta-task  | Description                                      | Long form      | Short form |
 |------------|--------------------------------------------------|----------------|------------|
@@ -74,7 +82,102 @@ Try it yourself!
 | Help       | Shows usage message.                             | `fj --help`    | `fj -h`    |
 | Version    | Prints current version of the `fj.sh` executable | `fj --version` | `fj -v`    |
 
-A side-note: tasks and meta-tasks can only be run from a directory where there's a `fj.sh` file available.
+A side-note: tasks and meta-tasks can only be run from a directory where there's a
+`fj.sh` file available.
+
+# Utils
+
+`fj.sh` includes a small set of built-in utilities designed to facilitate the development
+of shell scripts. All utilities are automatically imported and available in any task you
+define.
+
+Please note that using such utilities will break the property of your fj.sh file of being
+copy-pasteable for non-fj.sh users. In other others, using any of those utilities will
+require anyone willing to run your fj.sh tasks to either have fj.sh installed or make
+changes to your script before pasting it into their shell. That said, this is an opt-in
+feature, so feel free to ignore it if you prefer to keep your tasks more pure shell.
+
+## Available Utilities
+
+### _fj_log
+Prints messages with optional indentation. End messages with a whitespace to avoid
+trailing newlines.
+
+```bash
+task_with_logging() (
+    _fj_log "Starting task..."
+    FJ_LOG_INDENT=1 _fj_log "Indented message"
+    _fj_log "Task almost complete. " # trailing space to avoid trailing newline
+    _fj_log "Task complete." # this will have a trailing newline
+)
+```
+
+### _fj_confirm
+Prompts the user for confirmation before proceeding. If the user answers anything other
+than "y", the task will exit. 
+
+The first argument (required) is the question to ask, and the second argument (optional)
+is the message to display if the user answers anything other than "y".
+
+```bash
+dangerous_task() (
+    _fj_confirm "This will delete all temporary files" "Cancelled file deletion."
+    rm -rf /tmp/project_files/*
+)
+```
+
+#### Exit Scope
+
+When confirmation exits, the exit raised will end the current shell. That means if you
+define your task using curly braces, i.e., not inside a subshell, then the exit will
+raise up outside the caller. 
+
+```bash
+important_task() {
+  echo 1
+  dangerous_routine
+  # this will ONLY run if the user accepts confirmation on dangerous_routine:
+  echo 2 
+}
+
+dangerous_routine() {
+  _fj_confirm "This will delete all temporary files" "Cancelled file deletion."
+  # this will ONLY run if the user accepts confirmation:
+  rm -rf /tmp/project_files/* 
+}
+```
+
+On the other hand, if you define your function using parentheses, i.e., inside a
+sub-shell, then only the caller function will exit. 
+
+```bash
+important_task() {
+  echo 1
+  dangerous_routine
+  # this will even if the user doesn't accept confirmation because dangerous_routine is
+  # defined to run in a subshell:
+  echo 2 
+}
+
+dangerous_routine() (
+  _fj_confirm "This will delete all temporary files" "Cancelled file deletion."
+  # this will ONLY run if the user accepts confirmation:
+  rm -rf /tmp/project_files/* 
+)
+```
+
+
+### _fj_choose
+Provides an interactive menu for selecting from options. The selection menu supports
+arrow keys (up/down/left/right), j/k, and Ctrl-n/Ctrl-p for navigation, and Enter to
+select.
+
+```bash
+select_environment() (
+    _fj_choose selected_env "dev" "staging" "prod"
+    _fj_log "Selected environment: $selected_env"
+)
+```
 
 # FAQ
 ## Why?
