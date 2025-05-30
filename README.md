@@ -88,11 +88,11 @@ A side-note: tasks and meta-tasks can only be run from a directory where there's
 # Utils
 
 `fj.sh` includes a small set of built-in utilities designed to facilitate the development
-of shell scripts. All utilities are automatically imported and available in any task you
+of shell scripts. All utilities are automatically imported and available for any task you
 define.
 
-Please note that using such utilities will break the property of your fj.sh file of being
-copy-pasteable for non-fj.sh users. In other others, using any of those utilities will
+Please note that using such utilities will break the property of your fj.sh file being
+copy-pasteable for non-fj.sh users. In other words, using any of those utilities will
 require anyone willing to run your fj.sh tasks to either have fj.sh installed or make
 changes to your script before pasting it into their shell. That said, this is an opt-in
 feature, so feel free to ignore it if you prefer to keep your tasks more pure shell.
@@ -117,7 +117,7 @@ Prompts the user for confirmation before proceeding. If the user answers anythin
 than "y", the task will exit. 
 
 The first argument (required) is the question to ask, and the second argument (optional)
-is the message to display if the user answers anything other than "y".
+is the message to display if the user answers anything besides "y".
 
 ```bash
 dangerous_task() (
@@ -130,7 +130,7 @@ dangerous_task() (
 
 When confirmation exits, the exit raised will end the current shell. That means if you
 define your task using curly braces, i.e., not inside a subshell, then the exit will
-raise up outside the caller. 
+raise outside the caller. 
 
 ```bash
 important_task() {
@@ -148,7 +148,7 @@ dangerous_routine() {
 ```
 
 On the other hand, if you define your function using parentheses, i.e., inside a
-sub-shell, then only the caller function will exit. 
+subshell, then only the caller function will exit. 
 
 ```bash
 important_task() {
