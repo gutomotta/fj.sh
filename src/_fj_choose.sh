@@ -7,7 +7,7 @@ __fj_choose_prompt() {
     printf "Use arrows, j/k, or Ctrl-n/Ctrl-p to navigate, Enter to select:\n"
     for i in "${!options[@]}"
     do
-        if [ $i -eq $selected ]
+        if [ "$i" -eq "$selected" ]
         then
             printf " > \033[1;32m%s\033[0m\n" "${options[i]}"
         else
@@ -51,23 +51,23 @@ _fj_choose() {
         then
             read -rsn2 key
             case $key in
-                "[A") ((selected--));;  # Up arrow
-                "[D") ((selected--));;  # Left arrow
-                "[B") ((selected++));;  # Down arrow
-                "[C") ((selected++));;  # Right arrow
+                "[A") ((selected--)) || true;;  # Up arrow
+                "[D") ((selected--)) || true;;  # Left arrow
+                "[B") ((selected++)) || true;;  # Down arrow
+                "[C") ((selected++)) || true;;  # Right arrow
             esac
         elif [[ $key == $'\x0e' ]]
         then
-            ((selected++))  # Ctrl-n
+            ((selected++)) || true # Ctrl-n
         elif [[ $key == $'\x10' ]]
         then
-            ((selected--))  # Ctrl-p
+            ((selected--)) || true # Ctrl-p
         elif [[ $key == "j" ]]
         then
-            ((selected++))
+            ((selected++)) || true
         elif [[ $key == "k" ]]
         then
-            ((selected--))
+            ((selected--)) || true
         elif [[ $key == "" ]]
         then
             # Assign result to variable named by $__resultvar
