@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=1.0.1
+VERSION=1.0.2
 
 GENERIC_ERROR_CODE=1
 INVALID_OPT_ERROR_CODE=2
@@ -103,7 +103,7 @@ __read_opts() {
                 echo
                 for tsk in "${available_tasks[@]}"
                 do
-                    echo $tsk
+                    echo "$tsk"
                 done
                 echo
 
